@@ -5,21 +5,20 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-
+// Just write full path of files
 int main(int argc, char* argv[]) {
     int i;
-    printf("%d\n", argc);
-    int n = argc;
-    for(i = 1; i < n; i++){
-        FILE *file = fopen("file_size.o", "rb");
+    for(i = 1; i < argc; i++){
+        FILE *file = NULL;
+        file = fopen(argv[i], "r");
         struct stat statistics;
         if(file == NULL){
             printf("File isn't opened\n");
             continue;
         }
         fstat(fileno(file), &statistics);
-        printf("%d\n", statistics.st_size);
-        close(file);
+        printf("File '%s' weighs %d byte\n", argv[i], statistics.st_size);
+        fclose(file);
     }
     return 0;
 }
